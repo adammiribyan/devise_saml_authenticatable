@@ -115,9 +115,6 @@ module Devise
 end
 
 # Add saml_authenticatable strategy to defaults.
-#
-Devise.add_module(:saml_authenticatable,
-                  :route => :saml_authenticatable,
-                  :strategy   => true,
-                  :controller => :saml_sessions,
-                  :model  => 'devise_saml_authenticatable/model')
+module_options = { strategy: true, controller: :saml_sessions, model: 'devise_saml_authenticatable/model' }
+module_options.merge!(route: :saml_authenticatable) unless Devise::STRATEGIES.include?(:database_authenticatable)
+Devise.add_module(:saml_authenticatable, module_options)
